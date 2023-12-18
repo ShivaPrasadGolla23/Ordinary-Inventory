@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.OrderInventory.dto.OrderStatusCountDto;
+import com.OrderInventory.dto.OrdersDto;
 import com.OrderInventory.entity.Orders;
+import com.OrderInventory.exception.ResourceNotFoundException;
 import com.OrderInventory.service.OrdersService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -36,28 +39,50 @@ public class OrdersController {
 	      
 	}
 	
-	@GetMapping("/status/{orderStatus}")
+	/*@GetMapping("/status/{orderStatus}")
     public ResponseEntity<List<Orders>> getOrdersByStatus(@PathVariable String orderStatus) {
         List<Orders> ordersList = ordersService.getOrdersByStatus(orderStatus);
         return ResponseEntity.ok(ordersList);
-    }
+    }*/
+	
+	@GetMapping("/api/v1/orders/status")
+	public List<OrderStatusCountDto> getOrderStatusCount(){
+		
+		List<OrderStatusCountDto> result = ordersService.getOrderStatusCount();
+		
+		return result;
+	}
+
 	
 	@PutMapping("/{orders}")
     public Orders updateOrder(@PathVariable("orders") int orderId, @RequestBody Orders updatedOrder) {
         return ordersService.updateOrder(orderId, updatedOrder);
     }
 	
-	 @DeleteMapping("/{orderId}")
+	/* @DeleteMapping("/{orderId}")
 	    public ResponseEntity<String> deleteOrder(@PathVariable int orderId) {
 	        ordersService.deleteOrderById(orderId);
 	        return new ResponseEntity<>("Record deleted Successfully", HttpStatus.OK);
-	    }
+	    }*/
+	
+	@DeleteMapping("/delete/{orderid}")
+	public ResponseEntity<String> deleteOrdersById(@Valid @PathVariable (value="orderid") int ordersId){
+		return new ResponseEntity<String> ("Customer deleted with id : "+ordersId,HttpStatus.OK);
+	}
 	
 	 @PostMapping("{createorder}")
 	    public ResponseEntity<String> createOrder(@RequestBody Orders newOrder) {
 	        ordersService.createOrder(newOrder);
 	        return new ResponseEntity<>("Record Created Successfully", HttpStatus.OK);
 	    }
-		 
-	 
+		
+	 @GetMapping("/api/v1/orders/{store}")
+		public List<OrdersDto> getOrdersByStoreName(@PathVariable String store) throws ResourceNotFoundException{
+			
+			List<OrdersDto> ordersDto = ordersService.getOrdersByStoreName(store);
+			
+			return ordersDto;
+			
+		}
+	
 } 

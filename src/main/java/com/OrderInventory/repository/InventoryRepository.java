@@ -12,14 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.OrderInventory.entity.Inventory;
 
 @Repository
-
-public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
-
+public interface InventoryRepository extends JpaRepository <Inventory,Integer>{
 	
+	List<Inventory> findByStoreId_storeId(int storeId);
 
-
-
-	
-
-		
 }
