@@ -16,4 +16,8 @@ public interface InventoryRepository extends JpaRepository <Inventory,Integer>{
 	
 	List<Inventory> findByStoreId_storeId(int storeId);
 
+	Inventory findByInventoryId(int inventoryId);
+	
+	
+
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.OrderInventory.dto.InventoryDto;
+import com.OrderInventory.dto.InventoryShipmentDto;
+import com.OrderInventory.entity.Inventory;
 import com.OrderInventory.exception.ResourceNotFoundException;
 import com.OrderInventory.service.InventoryService;
 
@@ -26,9 +28,17 @@ import com.OrderInventory.service.InventoryService;
 			
 			return new ResponseEntity<List<InventoryDto>>(inventoryByStoreId,HttpStatus.OK);
 			
-			
+			}
+		
+		 @GetMapping("/inventory/{id}")
+		    public ResponseEntity<Inventory> getAllProductAndStoreDetails(@PathVariable("id") int inventoryId) throws ResourceNotFoundException {
+		        Inventory inventory = inventoryService.getAllProductAndStoreDetails(inventoryId);
+				return new ResponseEntity<>(inventory, HttpStatus.OK);
+		    }
+		  @GetMapping("/shipment")
+		    public ResponseEntity<List<InventoryShipmentDto>> getInventoriesAndMatchingShipments() throws ResourceNotFoundException {
+		        List<InventoryShipmentDto> inventories = inventoryService.getInventoriesAndMatchingShipments();
+		        return new ResponseEntity<>(inventories, HttpStatus.OK);
+		    }
 		}
-		
-		
-
-	}
+	

@@ -1,5 +1,7 @@
 package com.OrderInventory.entity;
 
+import com.OrderInventory.dto.InventoryDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,5 +26,15 @@ public class Inventory {
 	@JoinColumn(name = "product_id")
 	private Products productId;
 	
+	
+	 @ManyToOne
+	    @JoinColumn(name = "shipment_id")
+	    private Shipments shipment;
+	
 	private int productInventory;
+
+	
+
+
+	
 }
