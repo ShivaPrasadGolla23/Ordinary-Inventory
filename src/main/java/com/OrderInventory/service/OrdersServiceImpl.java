@@ -30,16 +30,14 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public List<Orders> fetchAllOrders() {
-        List<Orders> ordersList = ordersRepository.findAll();
-        
-        return ordersList;
+        try {
+            return ordersRepository.findAll();
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            throw new RuntimeException("Error fetching orders", e);
+        }
     }
 
-	/*@Override
-	public List<Orders> getOrdersByStatus(String orderstatus) {
-		// TODO Auto-generated method stub
-		return ordersRepository.findByOrderStatus(orderstatus);
-	}*/
     
     @Override
 	public List<OrderStatusCountDto> getOrderStatusCount() {
@@ -52,14 +50,22 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		return orderStatusCount;
 	}
-	@Override
+    
+    @Override
     public Orders updateOrder(int orderId, Orders updatedOrder) {
-        if (ordersRepository.existsById(orderId)) {
-            updatedOrder.setOrderId(orderId);
-            return ordersRepository.save(updatedOrder);
+        try {
+            if (ordersRepository.existsById(orderId)) {
+                updatedOrder.setOrderId(orderId);
+                return ordersRepository.save(updatedOrder);
+            } else {
+                throw new ResourceNotFoundException("Order not found with id: " + orderId);
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            throw new RuntimeException("Error updating order", e);
         }
-        return null; // Handle not found scenario
     }
+
 	@Override
 	public void deleteOrderById(int ordersId) {
 		 Optional<Orders> ordersdel = ordersRepository.findById(ordersId);
@@ -71,10 +77,24 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
 	@Override
-	public String deleteOrdersById(@Valid int ordersId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String deleteOrdersById(@Valid int ordersId) {
+        try {
+            // Your logic to delete the order by ID
+
+            // If the order is not found, throw OrderNotFoundException
+        	 if (!ordersRepository.existsById(ordersId)){
+                throw new ResourceNotFoundException("Order with ID " + ordersId + " not found");
+            }
+
+            // Your deletion logic here
+
+            return "Order with ID " + ordersId + " deleted successfully";
+        } catch (Exception e) {
+            // Handle other exceptions
+            return "An error occurred while processing the request";
+        }
+    }
+
 	
 	@Override
 	public List<OrdersDto> getOrdersByStoreName(String store) throws ResourceNotFoundException {

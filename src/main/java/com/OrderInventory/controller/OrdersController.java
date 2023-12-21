@@ -33,17 +33,18 @@ public class OrdersController {
 	private OrdersService ordersService;
 	
 	@GetMapping("/fetchAll")
-	public ResponseEntity<List<Orders>>displayAllInventory() {
-		List<Orders>ordersList=ordersService.fetchAllOrders();
-	      return new ResponseEntity<List<Orders>>(ordersList,HttpStatus.OK);
-	      
-	}
+    public ResponseEntity<List<Orders>> displayAllInventory() {
+        try {
+            List<Orders> ordersList = ordersService.fetchAllOrders();
+            return new ResponseEntity<>(ordersList, HttpStatus.OK);
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 	
-	/*@GetMapping("/status/{orderStatus}")
-    public ResponseEntity<List<Orders>> getOrdersByStatus(@PathVariable String orderStatus) {
-        List<Orders> ordersList = ordersService.getOrdersByStatus(orderStatus);
-        return ResponseEntity.ok(ordersList);
-    }*/
+	
 	
 	@GetMapping("/api/v1/orders/status")
 	public List<OrderStatusCountDto> getOrderStatusCount(){
@@ -59,11 +60,7 @@ public class OrdersController {
         return ordersService.updateOrder(orderId, updatedOrder);
     }
 	
-	/* @DeleteMapping("/{orderId}")
-	    public ResponseEntity<String> deleteOrder(@PathVariable int orderId) {
-	        ordersService.deleteOrderById(orderId);
-	        return new ResponseEntity<>("Record deleted Successfully", HttpStatus.OK);
-	    }*/
+	
 	
 	@DeleteMapping("/delete/{orderid}")
 	public ResponseEntity<String> deleteOrdersById(@Valid @PathVariable (value="orderid") int ordersId){

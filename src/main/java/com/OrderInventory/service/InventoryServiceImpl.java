@@ -1,13 +1,16 @@
 package com.OrderInventory.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.OrderInventory.dto.InventoryDetailsDto;
 import com.OrderInventory.dto.InventoryDto;
+import com.OrderInventory.dto.InventoryShipmentCountDto;
+import com.OrderInventory.dto.InventoryShipmentCountResponse;
 import com.OrderInventory.dto.InventoryShipmentDto;
 import com.OrderInventory.entity.Inventory;
 import com.OrderInventory.entity.Orders;
@@ -21,9 +24,9 @@ import com.OrderInventory.repository.ShipmentsRepository;
 public class InventoryServiceImpl implements InventoryService{
 
 	@Autowired
-	InventoryRepository inventoryRepository;
+	private InventoryRepository inventoryRepository;
 	@Autowired
-	OrdersRepository ordersRepository;
+	private OrdersRepository ordersRepository;
 	
 	@Autowired
     private ShipmentsRepository shipmentsRepository;
@@ -109,10 +112,28 @@ public class InventoryServiceImpl implements InventoryService{
         return shipment != null ? shipment.getShipmentStatus() : null;
     }
     
-    
+
+    @Override
+    public List<InventoryShipmentCountDto> getShipmentStatusCount() throws ResourceNotFoundException {
+        List<Inventory> inventories = inventoryRepository.findAll();
+
+        if (inventories.isEmpty()) {
+            throw new ResourceNotFoundException("No inventories found.");
+        }
+
+        Map<Object, Long> shipmentStatusCountMap = inventories.stream()
+                .filter(inventory -> inventory.getShipment() != null)
+                .collect(Collectors.groupingBy(
+                        inventory -> inventory.getShipment().getShipmentStatus(),
+                        Collectors.counting()
+                ));
+
+        return shipmentStatusCountMap.entrySet().stream()
+                .map(entry -> new InventoryShipmentCountDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+    }
     
 }
-
     
 
     

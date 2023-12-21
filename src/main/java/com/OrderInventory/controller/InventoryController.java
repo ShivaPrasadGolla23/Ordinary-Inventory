@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.OrderInventory.dto.InventoryDetailsDto;
 import com.OrderInventory.dto.InventoryDto;
+import com.OrderInventory.dto.InventoryShipmentCountDto;
+import com.OrderInventory.dto.InventoryShipmentCountResponse;
 import com.OrderInventory.dto.InventoryShipmentDto;
 import com.OrderInventory.entity.Inventory;
 import com.OrderInventory.exception.ResourceNotFoundException;
@@ -40,5 +43,13 @@ import com.OrderInventory.service.InventoryService;
 		        List<InventoryShipmentDto> inventories = inventoryService.getInventoriesAndMatchingShipments();
 		        return new ResponseEntity<>(inventories, HttpStatus.OK);
 		    }
+		  
+		  @GetMapping(("/api/v1/inventory/shipment"))
+		  public ResponseEntity<List<InventoryShipmentCountDto>> getShipmentCounts() throws ResourceNotFoundException {
+		        List<InventoryShipmentCountDto> shipmentCounts = inventoryService.getShipmentStatusCount();
+		        return new ResponseEntity<>(shipmentCounts, HttpStatus.OK);
+		    }
+		  
+		  
 		}
 	

@@ -13,7 +13,7 @@ import com.OrderInventory.entity.Orders;
 
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
-	//List<Orders> findByOrderStatus(String orderstatus);
+
 
     List<Orders> deleteByOrderId(int orderId);
 

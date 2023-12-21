@@ -4,6 +4,7 @@ package com.example.OrderInventory;
 
 import com.OrderInventory.controller.InventoryController;
 import com.OrderInventory.dto.InventoryDto;
+import com.OrderInventory.entity.Inventory;
 import com.OrderInventory.exception.ResourceNotFoundException;
 import com.OrderInventory.service.InventoryService;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,32 @@ class InventoryControllerTest {
         // Act and Assert
         assertThrows(ResourceNotFoundException.class, () -> inventoryController.getInventoryByStoreId(storeId));
     }
+    
+    @Test
+    void testGetAllProductAndStoreDetails() throws ResourceNotFoundException {
+        // Arrange
+        int inventoryId = 1;
+        Inventory mockInventory = new Inventory(); // Create a mock Inventory object
+
+        // Mock the behavior of the inventoryService
+        when(inventoryService.getAllProductAndStoreDetails(inventoryId)).thenReturn(mockInventory);
+
+        // Act
+        ResponseEntity<Inventory> response = inventoryController.getAllProductAndStoreDetails(inventoryId);
+
+        // Assert
+        // Verify that the service method was called with the correct parameter
+        verify(inventoryService, times(1)).getAllProductAndStoreDetails(inventoryId);
+
+        // Verify that the response entity has the correct status code and inventory object
+        assert response.getStatusCode() == HttpStatus.OK;
+        assert response.getBody() == mockInventory;
+    }
+
+
 }
+
+
 
 
 

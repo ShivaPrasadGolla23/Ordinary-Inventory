@@ -26,8 +26,9 @@ public interface OrdersService {
 	void deleteOrderById(int ordersId);
 	
 	List<OrdersDto> getOrdersByStoreName(String store) throws ResourceNotFoundException;
-
 	List<OrderStatusCountDto> getOrderStatusCount();
+
+	
 	
 	
 
