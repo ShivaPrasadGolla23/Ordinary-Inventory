@@ -18,20 +18,23 @@ import com.OrderInventory.entity.Inventory;
 import com.OrderInventory.exception.ResourceNotFoundException;
 import com.OrderInventory.service.InventoryService;
 
+import jakarta.validation.constraints.Min;
+
 @RestController
 	public class InventoryController {
 		
 		@Autowired
 		InventoryService inventoryService;
 		
-		@GetMapping("/api/v1/inventory/{storeId}")
-		public ResponseEntity<List<InventoryDto>> getInventoryByStoreId(@PathVariable int storeId) throws ResourceNotFoundException {
-			
-			List<InventoryDto> inventoryByStoreId = inventoryService.getInventoryByStoreId(storeId);
-			
-			return new ResponseEntity<List<InventoryDto>>(inventoryByStoreId,HttpStatus.OK);
-			
-			}
+	    @GetMapping("/{storeId}")
+	    public ResponseEntity<List<InventoryDto>> getInventoryByStoreId(@PathVariable @Min(1) int storeId)
+	            throws ResourceNotFoundException {
+
+	        List<InventoryDto> inventoryByStoreId = inventoryService.getInventoryByStoreId(storeId);
+	        return new ResponseEntity<>(inventoryByStoreId, HttpStatus.OK);
+	    }
+	
+
 		
 		 @GetMapping("/inventory/{id}")
 		    public ResponseEntity<Inventory> getAllProductAndStoreDetails(@PathVariable("id") int inventoryId) throws ResourceNotFoundException {

@@ -61,11 +61,12 @@ public class OrdersController {
     }
 	
 	
-	
 	@DeleteMapping("/delete/{orderid}")
 	public ResponseEntity<String> deleteOrdersById(@Valid @PathVariable (value="orderid") int ordersId){
 		return new ResponseEntity<String> ("Customer deleted with id : "+ordersId,HttpStatus.OK);
 	}
+	
+
 	
 	 @PostMapping("{createorder}")
 	    public ResponseEntity<String> createOrder(@RequestBody Orders newOrder) {

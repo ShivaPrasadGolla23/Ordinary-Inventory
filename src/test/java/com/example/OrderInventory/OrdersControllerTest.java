@@ -75,16 +75,16 @@ public class OrdersControllerTest {
         verify(ordersService, times(1)).updateOrder(orderId, updatedOrder);
     }
 
-    @Test
-    public void testDeleteOrdersById() {
+       @Test
+        public void testDeleteOrdersById() {
         // Mock data
         int orderId = 1;
 
         // Test
         ResponseEntity<String> responseEntity = ordersController.deleteOrdersById(orderId);
 
-        // Verify
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+       // Verify
+         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Customer deleted with id : " + orderId, responseEntity.getBody());
     }
 

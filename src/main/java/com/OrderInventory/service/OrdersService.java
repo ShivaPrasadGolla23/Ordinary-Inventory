@@ -17,16 +17,19 @@ public interface OrdersService {
 	Orders updateOrder(int orderId, Orders updatedOrder);
 
 	
-	//void deleteOrderById(int orderId);
-	public String deleteOrdersById(@Valid int ordersId);
+	void deleteOrderById(int orderId);
+     public String deleteOrdersById(@Valid int ordersId);
 	
 	
 	void createOrder(Orders newOrder);
 
-	void deleteOrderById(int ordersId);
+	
 	
 	List<OrdersDto> getOrdersByStoreName(String store) throws ResourceNotFoundException;
+	
+	
 	List<OrderStatusCountDto> getOrderStatusCount();
+
 
 	
 	
